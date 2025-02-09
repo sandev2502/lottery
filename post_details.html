@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lottery Post Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="container mx-auto px-4 py-6 max-w-2xl">
+        <div id="postDetailsContainer" class="bg-white p-6 rounded-lg shadow-md">
+            <div id="loadingIndicator" class="text-center text-gray-600">
+                Loading post details...
+            </div>
+            <div id="postContent" class="hidden">
+                <h1 id="postTitle" class="text-2xl font-bold text-blue-600 mb-4"></h1>
+                <div id="postCategory" class="text-sm text-gray-500 mb-4"></div>
+                <div id="postBody" class="prose max-w-none"></div>
+                <div class="mt-6 flex space-x-4">
+                    <button id="backButton" class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 flex-grow">
+                        Back to Results
+                    </button>
+                    <button id="refreshButton" class="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 flex-grow">
+                        Refresh
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function loadPostDetails() {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const postContent = document.getElementById('postContent');
+            const postTitle = document.getElementById('postTitle');
+            const postCategory = document.getElementById('postCategory');
+            const postBody = document.getElementById('postBody');
+
+            // Retrieve post data from localStorage
+            const selectedPostData = localStorage.getItem('selectedPost');
+
+            if (selectedPostData) {
+                try {
+                    const postData = JSON.parse(selectedPostData);
+                    
+                    // Populate post details
+                    postTitle.textContent = postData.title;
+                    postCategory.textContent = `Category: ${postData.category}`;
+                    
+                    // Remove URLs from the content
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = postData.content;
+                    
+                    // Remove all anchor tags (links)
+                    tempDiv.querySelectorAll('a').forEach(link => {
+                        // Replace link with its text content
+                        link.replaceWith(link.textContent);
+                    });
+
+                    // Remove img tags
+                    tempDiv.querySelectorAll('img').forEach(img => {
+                        img.remove();
+                    });
+
+                    // Remove any remaining URLs
+                    const urlRegex = /https?:\/\/[^\s]+/g;
+                    let cleanedContent = tempDiv.innerHTML.replace(urlRegex, '');
+
+                    postBody.innerHTML = cleanedContent;
+
+                    // Hide loading, show content
+                    loadingIndicator.classList.add('hidden');
+                    postContent.classList.remove('hidden');
+                } catch (error) {
+                    console.error('Error parsing post data:', error);
+                    loadingIndicator.textContent = 'Error loading post details.';
+                }
+            } else {
+                loadingIndicator.textContent = 'No post selected.';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initial load
+            loadPostDetails();
+
+            // Back button functionality
+            const backButton = document.getElementById('backButton');
+            backButton.addEventListener('click', () => {
+                window.close();
+            });
+
+            // Refresh button functionality
+            const refreshButton = document.getElementById('refreshButton');
+            refreshButton.addEventListener('click', () => {
+                // Show loading indicator
+                document.getElementById('loadingIndicator').classList.remove('hidden');
+                document.getElementById('postContent').classList.add('hidden');
+                
+                // Reload post details
+                loadPostDetails();
+            });
+        });
+    </script>
+</body>
+</html>

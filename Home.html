@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kerala Lottery Results - Home</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom Styles -->
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4299e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2c5282;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans antialiased">
+    <!-- Main Container -->
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-blue-600 text-white shadow-md">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                   <!-- Back Button -->
+                   <a href="index.html" class="text-white hover:bg-blue-700 p-2 rounded-full transition duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                </a>
+                <!-- Logo/Title -->
+                <div class="flex items-center space-x-3">
+
+                    <h1 class="text-2xl font-bold">Kerala Lottery Results</h1>
+                </div>
+
+                <!-- Desktop Category Dropdown -->
+                <div class="relative group">
+                    <button class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-full flex items-center space-x-2">
+                        <span>Categories</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 w-48 z-20">
+                        <div id="desktop-category-list" class="py-2">
+                            <!-- Desktop category links will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-4 py-6 flex-grow">
+            <h1 class="text-3xl font-bold text-blue-600 mb-6 text-center">Latest Kerala Lottery Results</h1>
+            
+            <div id="loadingIndicator" class="text-center text-gray-600 mt-10">
+                Loading Latest Lottery Results...
+            </div>
+            
+            <div id="resultsContainer" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+                <!-- Latest lottery results will be dynamically added here -->
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-blue-600 text-white py-6">
+            <div class="container mx-auto px-4 text-center">
+                <p>&copy; 2024 Kerala Lottery Results. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Lottery Categories
+        const LOTTERY_CATEGORIES = [
+            { name: "Home", url: "/", page: "Home.html" },
+            { name: "Akshaya", url: "/search/label/Akshaya%20Lottery%20Results", page: "Akshaya.html" },
+            { name: "Win Win", url: "/search/label/Win%20Win", page: "Win_win.html" },
+            { name: "Sthree Sakthi", url: "/search/label/Sthree%20Sakthi", page: "Sthree_Sakthi.html" },
+            { name: "Fifty Fifty", url: "/search/label/Fifty%20Fifty", page: "Fifty_fifty.html" },
+            { name: "Karunya Plus", url: "/search/label/Karunya%20Plus", page: "Karunya_plus.html" },
+            { name: "Nirmal", url: "/search/label/Nirmal%20Lottery%20Results", page: "Nirmal.html" },
+            { name: "Karunya", url: "/search/label/Karunya%20Lottery%20Results", page: "Karunya.html" },
+            { name: "Bumper", url: "/search/label/kerala-bumper-lotteries", page: "Bumber.html" }
+        ];
+
+        // Proxy URL for fetching data
+        
+        const PROXY_URL = "https://api.allorigins.win/get?url=";
+        const BASE_URL = "https://www.keralalotteries.net";
+
+        // Render Category Lists
+        function renderCategoryLists() {
+            const desktopList = document.getElementById('desktop-category-list');
+
+            LOTTERY_CATEGORIES.forEach(category => {
+                // Desktop Category Link
+                const desktopCategoryLink = document.createElement('a');
+                desktopCategoryLink.href = category.page;
+                desktopCategoryLink.textContent = category.name;
+                desktopCategoryLink.className = `
+                    block px-4 py-2 
+                    ${category.name === 'Home' ? 'bg-blue-100 text-blue-600' : 'hover:bg-blue-50 hover:text-blue-600'}
+                `;
+                desktopList.appendChild(desktopCategoryLink);
+            });
+        }
+
+        // Fetch Latest Lottery Results
+        async function fetchLatestResults() {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const resultsContainer = document.getElementById('resultsContainer');
+
+            try {
+                const fullUrl = `${BASE_URL}/search/label/Kerala%20Lottery%20Results`;
+                const proxyUrl = `${PROXY_URL}${encodeURIComponent(fullUrl)}`;
+
+                const response = await fetch(proxyUrl);
+                const data = await response.json();
+
+                // Parse the HTML content
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data.contents, 'text/html');
+
+                // Extract posts
+                const posts = doc.querySelectorAll('.post');
+                
+                if (posts.length === 0) {
+                    resultsContainer.innerHTML = `
+                        <div class="col-span-full text-center text-gray-600">
+                            No lottery results found.
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Clear previous results
+                resultsContainer.innerHTML = '';
+
+                posts.forEach(post => {
+                    const title = post.querySelector('.post-title')?.textContent.trim() || 'Lottery Result';
+                    const content = post.querySelector('.post-body')?.textContent.trim() || 'No details available';
+                    const fullContent = post.querySelector('.post-body')?.innerHTML || content;
+
+                    const resultCard = document.createElement('div');
+                    resultCard.className = 'bg-white rounded-lg shadow-md overflow-hidden transform transition hover:scale-105';
+                    resultCard.innerHTML = `
+                        <div class="p-6">
+                            <h2 class="text-xl font-bold text-blue-600 mb-4">${title}</h2>
+                            <button class="view-details-btn bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition">
+                                View Details
+                            </button>
+                        </div>
+                    `;
+
+                    // Add click event to view full details
+                    const viewDetailsBtn = resultCard.querySelector('.view-details-btn');
+                    viewDetailsBtn.addEventListener('click', () => {
+                        localStorage.setItem('selectedPost', JSON.stringify({
+                            title: title,
+                            content: fullContent,
+                            category: 'Home'
+                        }));
+                        
+                        window.open('post_details.html', '_blank');
+                    });
+
+                    resultsContainer.appendChild(resultCard);
+                });
+
+                // Hide loading, show results
+                loadingIndicator.classList.add('hidden');
+                resultsContainer.classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Fetch error:', error);
+                loadingIndicator.textContent = 'Failed to load lottery results.';
+            }
+        }
+        
+
+        // Utility Functions
+        function truncateText(text, maxLength) {
+            return text.length > maxLength 
+                ? text.substring(0, maxLength) + '...' 
+                : text;
+        }
+
+        // Initialize on DOM Load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCategoryLists();
+            fetchLatestResults();
+        });
+    </script>
+</body>
+</html>

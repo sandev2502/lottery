@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Karunya Plus Lottery Results</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Custom Styles -->
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4299e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2c5282;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans antialiased">
+    <!-- Mobile Drawer (Hidden by default) -->
+    <div id="mobile-drawer" class="fixed inset-0 z-50 bg-gray-900 bg-opacity-50 hidden">
+        <div class="absolute left-0 top-0 bottom-0 w-64 bg-white shadow-lg transform transition-transform duration-300 ease-in-out" id="drawer-content">
+            <div class="p-4 border-b border-gray-200 flex justify-between items-center">
+                <h2 class="text-xl font-bold text-blue-600">Lottery Categories</h2>
+                <button id="close-drawer" class="text-gray-600 hover:text-gray-900">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <nav class="p-4 space-y-2" id="mobile-category-list">
+                <!-- Mobile category buttons will be dynamically added here -->
+            </nav>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-blue-600 text-white shadow-md">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <!-- Mobile Hamburger Menu -->
+                <button id="mobile-menu-btn" class="md:hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                </button>
+   <!-- Back Button -->
+   <a href="index.html" class="text-white hover:bg-blue-700 p-2 rounded-full transition duration-300">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+    </svg>
+</a>
+                <!-- Logo/Title -->
+                <div class="flex items-center space-x-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <h1 class="text-2xl font-bold">Kerala Lottery</h1>
+                </div>
+
+                
+
+                <!-- Desktop Category Dropdown -->
+                <div class="hidden md:block relative group">
+                    <button class="bg-blue-500 hover:bg-blue-600 px-4 py-2 rounded-full flex items-center space-x-2">
+                        <span>Categories</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
+                    <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-lg mt-2 w-48 z-20">
+                        <div id="desktop-category-list" class="py-2">
+                            <!-- Desktop category links will be dynamically added here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-4 py-6 flex-grow">
+            <h1 class="text-3xl font-bold text-blue-600 mb-6 text-center">Karunya Plus Lottery Results</h1>
+            
+            <div id="loadingIndicator" class="text-center text-gray-600 mt-10">
+                Loading Karunya Plus Lottery Results...
+            </div>
+            
+            <div id="resultsContainer" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 hidden">
+                <!-- Karunya Plus lottery results will be dynamically added here -->
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-blue-600 text-white py-6">
+            <div class="container mx-auto px-4 text-center">
+                <p>&copy; 2024 Kerala Lottery Results. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Lottery Categories
+        const LOTTERY_CATEGORIES = [
+            { name: "Home", url: "/", page: "Home.html" }, // Add this line first
+            { name: "Akshaya", url: "/search/label/Akshaya%20Lottery%20Results", page: "Akshaya.html" },
+            { name: "Win Win", url: "/search/label/Win%20Win", page: "Win_win.html" },
+            { name: "Sthree Sakthi", url: "/search/label/Sthree%20Sakthi", page: "Sthree_Sakthi.html" },
+            { name: "Fifty Fifty", url: "/search/label/Fifty%20Fifty", page: "Fifty_fifty.html" },
+            { name: "Karunya Plus", url: "/search/label/Karunya%20Plus", page: "Karunya_plus.html" },
+            { name: "Nirmal", url: "/search/label/Nirmal%20Lottery%20Results", page: "Nirmal.html" },
+            { name: "Karunya", url: "/search/label/Karunya%20Lottery%20Results", page: "Karunya.html" },
+            { name: "Bumper", url: "/search/label/kerala-bumper-lotteries", page: "Bumber.html" }
+        ];
+
+        // Proxy URL for fetching data
+        const PROXY_URL = "https://api.allorigins.win/get?url=";
+        const BASE_URL = "https://www.keralalotteries.net";
+
+        // Render Category Lists
+        function renderCategoryLists() {
+            const mobileList = document.getElementById('mobile-category-list');
+            const desktopList = document.getElementById('desktop-category-list');
+
+            LOTTERY_CATEGORIES.forEach(category => {
+                // Mobile Category Button
+                const mobileCategoryBtn = document.createElement('a');
+                mobileCategoryBtn.href = category.page;
+                mobileCategoryBtn.textContent = category.name;
+                mobileCategoryBtn.className = `
+                    block py-2 px-4 
+                    ${category.name === 'Karunya Plus' ? 'bg-blue-100 text-blue-600' : 'hover:bg-blue-50 text-gray-700 hover:text-blue-600'}
+                `;
+                mobileList.appendChild(mobileCategoryBtn);
+
+                // Desktop Category Link
+                const desktopCategoryLink = document.createElement('a');
+                desktopCategoryLink.href = category.page;
+                desktopCategoryLink.textContent = category.name;
+                desktopCategoryLink.className = `
+                    block px-4 py-2 
+                    ${category.name === 'Karunya Plus' ? 'bg-blue-100 text-blue-600' : 'hover:bg-blue-50 hover:text-blue-600'}
+                `;
+                desktopList.appendChild(desktopCategoryLink);
+            });
+        }
+
+        // Fetch Karunya Plus Lottery Results
+        async function fetchKarunyaPlusResults() {
+            const loadingIndicator = document.getElementById('loadingIndicator');
+            const resultsContainer = document.getElementById('resultsContainer');
+
+            try {
+                const fullUrl = `${BASE_URL}/search/label/Karunya%20Plus`;
+                const proxyUrl = `${PROXY_URL}${encodeURIComponent(fullUrl)}`;
+
+                const response = await fetch(proxyUrl);
+                const data = await response.json();
+
+                // Parse the HTML content
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(data.contents, 'text/html');
+
+                // Extract posts
+                const posts = doc.querySelectorAll('.post');
+                
+                if (posts.length === 0) {
+                    resultsContainer.innerHTML = `
+                        <div class="col-span-full text-center text-gray-600">
+                            No Karunya Plus lottery results found.
+                        </div>
+                    `;
+                    return;
+                }
+
+                // Clear previous results
+                resultsContainer.innerHTML = '';
+
+                posts.forEach(post => {
+                    const title = post.querySelector('.post-title')?.textContent.trim() || 'Karunya Plus Lottery Result';
+                    const content = post.querySelector('.post-body')?.textContent.trim() || 'No details available';
+                    const fullContent = post.querySelector('.post-body')?.innerHTML || content;
+
+                    const resultCard = document.createElement('div');
+                    resultCard.className = 'bg-white rounded-lg shadow-md overflow-hidden transform transition hover:scale-105';
+                    resultCard.innerHTML = `
+                        <div class="p-6">
+                            <h2 class="text-xl font-bold text-blue-600 mb-4">${title}</h2>
+                            
+                            <button class="view-details-btn bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition">
+                                View Details
+                            </button>
+                        </div>
+                    `;
+
+                    // Add click event to view full details
+                    const viewDetailsBtn = resultCard.querySelector('.view-details-btn');
+                    viewDetailsBtn.addEventListener('click', () => {
+                        localStorage.setItem('selectedPost', JSON.stringify({
+                            title: title,
+                            content: fullContent,
+                            category: 'Karunya Plus'
+                        }));
+                        
+                        window.open('post_details.html', '_blank');
+                    });
+
+                    resultsContainer.appendChild(resultCard);
+                });
+
+                // Hide loading, show results
+                loadingIndicator.classList.add('hidden');
+                resultsContainer.classList.remove('hidden');
+
+            } catch (error) {
+                console.error('Fetch error:', error);
+                loadingIndicator.textContent = 'Failed to load Karunya Plus lottery results.';
+            }
+        }
+
+        // Utility Functions
+        function truncateText(text, maxLength) {
+            return text.length > maxLength 
+                ? text.substring(0, maxLength) + '...' 
+                : text;
+        }
+
+        // Mobile Drawer Functionality
+        function setupMobileDrawer() {
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileDrawer = document.getElementById('mobile-drawer');
+            const closeDrawerBtn = document.getElementById('close-drawer');
+
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileDrawer.classList.remove('hidden');
+            });
+
+            closeDrawerBtn.addEventListener('click', () => {
+                mobileDrawer.classList.add('hidden');
+            });
+
+            // Close drawer when clicking outside
+            mobileDrawer.addEventListener('click', (e) => {
+                if (e.target === mobileDrawer) {
+                    mobileDrawer.classList.add('hidden');
+                }
+            });
+        }
+
+        // Initialize on DOM Load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCategoryLists();
+            fetchKarunyaPlusResults();
+            setupMobileDrawer();
+        });
+    </script>
+</body>
+</html>

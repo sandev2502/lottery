@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kerala Lottery Categories</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for hover and transition effects */
+        .category-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .category-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans antialiased">
+    <!-- Main Container -->
+    <div class="min-h-screen flex flex-col">
+        <!-- Header -->
+        <header class="bg-blue-600 text-white shadow-md">
+            <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+                <!-- Logo/Title -->
+                <div class="flex items-center space-x-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <h1 class="text-2xl font-bold">Kerala Lottery Categories</h1>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="container mx-auto px-4 py-8 flex-grow">
+            <div id="categoriesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Categories will be dynamically added here -->
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="bg-blue-600 text-white py-4 mt-auto">
+            <div class="container mx-auto px-4 text-center">
+                <p>&copy; 2024 Kerala Lottery Results. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Lottery Categories with their respective pages
+        const LOTTERY_CATEGORIES = [
+            { 
+                name: "Home", 
+                page: "Home.html"
+            },
+            { 
+                name: "Akshaya", 
+                page: "Akshaya.html"
+            },
+            { 
+                name: "Win Win", 
+                page: "Win_win.html"
+            },
+            { 
+                name: "Sthree Sakthi", 
+                page: "Sthree_Sakthi.html"
+            },
+            { 
+                name: "Fifty Fifty", 
+                page: "Fifty_fifty.html"
+            },
+            { 
+                name: "Karunya Plus", 
+                page: "Karunya_plus.html"
+            },
+            { 
+                name: "Nirmal", 
+                page: "Nirmal.html"
+            },
+            { 
+                name: "Karunya", 
+                page: "Karunya.html"
+            },
+            { 
+                name: "Bumper", 
+                page: "Bumber.html"
+            }
+        ];
+
+        // Render Categories
+        function renderCategories() {
+            const categoriesContainer = document.getElementById('categoriesContainer');
+
+            LOTTERY_CATEGORIES.forEach(category => {
+                // Create category card
+                const categoryCard = document.createElement('div');
+                categoryCard.className = `
+                    category-card 
+                    bg-white 
+                    rounded-lg 
+                    shadow-md 
+                    p-6 
+                    text-center 
+                    cursor-pointer 
+                    hover:bg-blue-50
+                    transition
+                    duration-300
+                `;
+
+                // Add click event to navigate to category page
+                categoryCard.addEventListener('click', () => {
+                    window.location.href = category.page;
+                });
+
+                // Card content
+                categoryCard.innerHTML = `
+                    <h2 class="text-xl font-bold text-blue-600 mb-2">${category.name}</h2>
+                `;
+
+                categoriesContainer.appendChild(categoryCard);
+            });
+        }
+
+        // Initialize on DOM Load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderCategories();
+        });
+    </script>
+</body>
+</html>
